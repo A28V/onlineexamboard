@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Result</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5+hb0Q3Ks6ck7giHFvspoxm07Pz3jNYojaxXb4VJ" crossorigin="anonymous">
+    <style>
+        /* Custom CSS for button */
+        .print-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .print-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Exam Result</h1>
+        <h2>{{ exam.title }}</h2>
+        <p>Duration: {{ exam.duration }} minutes</p>
+        <h3>Total Score: {{ total_score }}</h3>
+        <h3>Score: {{ score }}</h3>
+        <h3>Questions:</h3>
+        <ol>
+            {% for question in questions %}
+            <li>
+                <p>{{ question.text }}</p>
+                <ul>
+                    <li>Option 1: {{ question.option1 }}</li>
+                    <li>Option 2: {{ question.option2 }}</li>
+                    <li>Option 3: {{ question.option3 }}</li>
+                    <li>Option 4: {{ question.option4 }}</li>
+                </ul>
+                <p>Your Answer: 
+                    {% for attempt in attempted_questions %}
+                        {% if attempt.question == question %}
+                            {{ attempt.chosen_option }}
+                        {% endif %}
+                    {% endfor %}
+                </p>
+                <p>Correct Answer: {{ question.correct_answer }}</p>
+                {% for attempt in attempted_questions %}
+                        {% if attempt.question == question %}
+                        {% if attempt.is_correct %}
+                        <p><strong>Your Answer is Correct!</strong></p>
+                        {% else %}
+                        <p><strong>Your Answer is Incorrect!</strong></p>
+                        {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                
+            </li>
+            {% endfor %}
+        </ol>
+    </div>
+
+    <!-- Print Button -->
+    <button class="print-button btn btn-primary position-fixed top-0 end-0 m-3" onclick="window.print()">Print Result</button>
+    <script>
+        window.onload = function() {
+            window.print();
+        };
+    </script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+</body>
+</html>
